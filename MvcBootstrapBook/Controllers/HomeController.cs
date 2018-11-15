@@ -1,55 +1,74 @@
-﻿using System;
+﻿using MvcBootstrapBook.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics;
+using System.Collections;
 
 namespace MvcBootstrapBook.Controllers
 {
     public class HomeController : Controller
     {
+        static int numObjects = 0;
+        public HomeController()
+        {
+          numObjects++;
+          Debug.WriteLine("!!!!!!! HomeController object created: {0}", numObjects);
+        }
+
+        static List<Task> gTasks = new List<Task>();
+
+        static HomeController()
+        {
+          for (int i = 0; i < 5; i++)
+          {
+            var task = new Task
+            {
+              Text = "задача #" + i.ToString(),
+              IsCompleted = false
+            };
+
+            gTasks.Add(task);
+          }
+        }
+
         //
         // GET: /Home/
 
         public ActionResult Index()
         {
-            return View();
+          return View(gTasks);
         }
 
         //
         // GET: /Home/Details/5
 
-        public ActionResult Details(int id)
+        public ActionResult Done(int idx)
         {
-            return View();
+          gTasks[idx].IsCompleted = true;
+          return RedirectToAction("Index");
         }
 
         //
         // GET: /Home/Create
 
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Home/Create
-
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(string taskText)
         {
-            try
-            {
-                // TODO: Add insert logic here
+          var task = new Task
+          {
+            Text = taskText,
+            IsCompleted = false
+          };
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          gTasks.Add(task);
+
+          return RedirectToAction("Index");
         }
 
+        
         //
         // GET: /Home/Edit/5
 
