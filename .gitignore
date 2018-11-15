@@ -3,3 +3,4 @@
 *.dll
 *.pdb
 /MvcBootstrapBook/obj
+/MvcBootstrapBook/bin
