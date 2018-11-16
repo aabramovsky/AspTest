@@ -45,9 +45,16 @@ namespace MvcBootstrapBook.Controllers
         //
         // GET: /Home/Details/5
 
-        public ActionResult Done(int idx)
+        [HttpPost]
+        public ActionResult Done(string taskId, FormCollection collection)
         {
-          gTasks[idx].IsCompleted = true;
+          try 
+          {
+            gTasks[Int32.Parse(taskId)].IsCompleted = true;
+          }
+          catch
+          {    }
+          
           return RedirectToAction("Index");
         }
 
@@ -72,7 +79,7 @@ namespace MvcBootstrapBook.Controllers
         //
         // GET: /Home/Edit/5
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string taskId, string text)
         {
             return View();
         }
@@ -81,44 +88,36 @@ namespace MvcBootstrapBook.Controllers
         // POST: /Home/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string taskId, string text, FormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+              gTasks[Int32.Parse(taskId)].Text = text;
             }
             catch
-            {
-                return View();
-            }
+            { }
+            
+            return RedirectToAction("Index");
         }
 
         //
         // GET: /Home/Delete/5
 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         //
         // POST: /Home/Delete/5
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string taskId, FormCollection collection)
         {
             try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+            {              
+                int idx = Int32.Parse(taskId);
+                gTasks.RemoveAt(idx);
             }
             catch
-            {
-                return View();
-            }
+            { }
+
+            return RedirectToAction("Index");
         }
     }
 }
