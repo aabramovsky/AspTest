@@ -11,31 +11,15 @@ namespace MvcBootstrapBook.Controllers
 {
     public class HomeController : Controller
     {
-        static int numObjects = 0;
-        public HomeController()
-        {
-          numObjects++;
-          Debug.WriteLine("!!!!!!! HomeController object created: {0}", numObjects);
-        }
-
         static List<Task> gTasks = new List<Task>();
         TaskContext db = new TaskContext();
-
-        static HomeController()
-        {
-        }
 
         //
         // GET: /Home/
 
         public ActionResult Index()
         {
-          foreach (Task t in db.Tasks)
-          {
-            gTasks.Add(t);
-          }
-
-          return View(gTasks[0]);
+          return View(db.Tasks);
         }
 
         //
