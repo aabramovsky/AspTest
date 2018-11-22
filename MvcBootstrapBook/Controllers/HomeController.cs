@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
 using System.Collections;
+using System.Data;
 
 namespace MvcBootstrapBook.Controllers
 {
@@ -30,10 +31,13 @@ namespace MvcBootstrapBook.Controllers
         {
           try 
           {
-            gTasks[Int32.Parse(taskId)].IsCompleted = true;
+            Task task = db.Tasks.Find(int.Parse(taskId));
+            task.IsCompleted = true;
+            db.Entry(task).State = EntityState.Modified;
+            db.SaveChanges();
           }
-          catch
-          {    }
+          catch(Exception e)
+          {   }
           
           return RedirectToAction("Index");
         }
@@ -50,7 +54,8 @@ namespace MvcBootstrapBook.Controllers
             IsCompleted = false
           };
 
-          gTasks.Add(task);
+          db.Tasks.Add(task);
+          db.SaveChanges();
 
           return RedirectToAction("Index");
         }
@@ -72,7 +77,10 @@ namespace MvcBootstrapBook.Controllers
         {
             try
             {
-              gTasks[Int32.Parse(taskId)].Text = text;
+              Task task = db.Tasks.Find(int.Parse(taskId));
+              task.Text = text;
+              db.Entry(task).State = EntityState.Modified;
+              db.SaveChanges();
             }
             catch
             { }
@@ -90,9 +98,11 @@ namespace MvcBootstrapBook.Controllers
         public ActionResult Delete(string taskId, FormCollection collection)
         {
             try
-            {              
-                int idx = Int32.Parse(taskId);
-                gTasks.RemoveAt(idx);
+            {
+              Task task = db.Tasks.Find(int.Parse(taskId));
+
+              db.Tasks.Remove(task);
+              db.SaveChanges();
             }
             catch
             { }
