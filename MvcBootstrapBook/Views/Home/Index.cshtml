@@ -1,14 +1,9 @@
-﻿@using MvcBootstrapBook.Models;
-@model List<Task>
-@using System.Collections;
-@using System.Collections.Generic;
+﻿@model MvcBootstrapBook.Models.Task
 
-@{   
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Index1";
+@{
+    ViewBag.Title = "Index";
 }
 
-<body>
 <head>
   <title>Bootstrap Example</title>
   <meta charset="utf-8">
@@ -20,154 +15,28 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script  type="text/javascript">
-    $(document).on("click", ".taskActionModal, .taskDeleteModal", function () {
-      //alert("Привет");
-      var myImageId = $(this).attr('id');
-      var taskText = $(this).attr('taskText');
-      
-      //$("#taskId").val(myImageId);
-
-      var list = document.getElementsByClassName("currentTaskId");
-      for (var i = 0; i < list.length; i++) {
-        document.getElementsByClassName("currentTaskId")[i].value = myImageId
-      }
-
-      var list = document.getElementsByClassName("taskText");
-      for (var i = 0; i < list.length; i++) {
-        document.getElementsByClassName("taskText")[i].value = taskText
-      }
-
-      
-      //var myBookId = $(this).data('id');
-      //$(".modal-body #bookId").val(myBookId);
-      // As pointed out in comments, 
-      //$("#doneTaskModalId").modal("show");
-    });
-  </script>
-
 </head>
 
-<div>
-    <p>
-        <h2><center>Task List:</center></h2>
-        @for (int i = 0; i < Model.Count; i++ )
-        {
-          Task t = Model[i];
-          
-          if (t.IsCompleted)
-          {
-            <div class="alert alert-success taskDeleteModal" role="alert" data-toggle="modal" id="@i" data-target="#taskDeleteModal">
-              @t.Text
-            </div>
-          }
-          else
-          {
-            <div class="alert alert-info taskActionModal" role="alert" data-toggle="modal" id="@i" taskText="@t.Text" data-target="#taskActionModal">
-              @t.Text
-            </div>
-          }
-        }
-    </p>
-</div>
+<h2>Index</h2>
 
- <center><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewTaskModal">Add new task</button></center>
+<fieldset>
+    <legend>Task</legend>
 
-<!-- Modal -->
-<div id="addNewTaskModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-body">
-            @using (Html.BeginForm("Create", "Home", FormMethod.Post))
-             {
-                <div class="form-group">
-                  <label for="text">Task text:</label>
-                  <input type="text" class="form-control" name="taskText">
-                </div>
-                <button type="submit" class="btn btn-default">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-             }
-      </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Text)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Text)
     </div>
 
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="taskDeleteModal" role="dialog">
-  <div class="modal-dialog modal-sm">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-body">
-        @using (Html.BeginForm("", "Home", FormMethod.Post))
-        {
-         <input type="hidden" class="currentTaskId" name="taskId" id="taskId1" value=""/>
-         <input type="submit" formaction="@Url.Action("Delete")" formmethod="post" value="Delete" class="btn btn-danger" style="float: left;" />
-         <button type="button" class="btn" data-dismiss="modal" style="float: right;">Cancel</button>
-        }
-      </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsCompleted)
     </div>
-
-  </div>
-</div>
-
-
-<!-- Modal -->
-<div id="taskActionModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"></h4>
-      </div>
-      <div class="modal-body">
-        @using (Html.BeginForm("", "Home", FormMethod.Post))
-        {
-         <input type="hidden" class="currentTaskId" name="taskId" id="taskId2" value=""/>
-          <div class="form-group">
-                  <label for="text">Task text:</label>
-                  <input type="text" class="form-control taskText" name="text">
-         </div>
-         <input type="submit" formaction="@Url.Action("Edit")" formmethod="post" value="Save" class="btn btn-primary" />
-         <input type="submit" formaction="@Url.Action("Done")" formmethod="post" value="Complete" class="btn btn-success" />
-         <input type="submit" formaction="@Url.Action("Delete")" formmethod="post" value="Delete" class="btn btn-danger" style="float: right;" />
-        }
-      </div>
+    <div class="display-field">
+        @Html.EditorFor(model => model.IsCompleted)
     </div>
-
-  </div>
-</div>
-
-
-
-<!-- Modal -->
-<div id="taskActionModal1" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"></h4>
-      </div>
-      <div class="modal-body">
-        @using (Html.BeginForm("Done", "Home", FormMethod.Post))
-        {
-            <input type="hidden" name="taskId" id="taskId" value=""/>
-            <button type="submit" class="btn btn-default">Finish task</button>
-        }
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-</body>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

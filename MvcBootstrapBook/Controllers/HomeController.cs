@@ -19,19 +19,10 @@ namespace MvcBootstrapBook.Controllers
         }
 
         static List<Task> gTasks = new List<Task>();
+        TaskContext db = new TaskContext();
 
         static HomeController()
         {
-          for (int i = 0; i < 5; i++)
-          {
-            var task = new Task
-            {
-              Text = "задача #" + i.ToString(),
-              IsCompleted = false
-            };
-
-            gTasks.Add(task);
-          }
         }
 
         //
@@ -39,7 +30,12 @@ namespace MvcBootstrapBook.Controllers
 
         public ActionResult Index()
         {
-          return View(gTasks);
+          foreach (Task t in db.Tasks)
+          {
+            gTasks.Add(t);
+          }
+
+          return View(gTasks[0]);
         }
 
         //
@@ -118,6 +114,12 @@ namespace MvcBootstrapBook.Controllers
             { }
 
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+          db.Dispose();
+          base.Dispose(disposing);
         }
     }
 }
