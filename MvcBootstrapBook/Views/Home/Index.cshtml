@@ -21,8 +21,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script  type="text/javascript">
-    $(document).on("click", ".taskActionModal, .taskDeleteModal", function () {
+    $(document).on("click", ".taskActionModal, .taskDeleteModal", function ()
+    {
       //alert("Привет");
+      
       var myImageId = $(this).attr('id');
       var taskText = $(this).attr('taskText');
       
@@ -38,12 +40,46 @@
         document.getElementsByClassName("taskText")[i].value = taskText
       }
 
-      
-      //var myBookId = $(this).data('id');
-      //$(".modal-body #bookId").val(myBookId);
-      // As pointed out in comments, 
-      //$("#doneTaskModalId").modal("show");
     });
+  
+    function filterChanged(val)
+    {
+     var list = document.getElementsByClassName("taskEntry");
+
+     //try {
+       for (var i = 0; i < list.length; i++)
+       {
+         var entryElement = list[i];
+
+         if (entryElement.innerText.includes(val))
+         {
+           //alert("InnerText=" + entryElement.innerText + " InnerHTML=" + entryElement.innerHTML);
+           //entryElement.style.visibility = "visible";
+           $(entryElement).show();
+
+           if (val === "") {
+             //alert(" Typeof entryElement: " + (typeof entryElement));
+             entryElement.innerHTML = $(entryElement).attr('taskText');
+             //alert("InnerHTML was restored");
+           }
+           else {
+             var text = $(entryElement).attr('taskText');
+             var html = text.replace(val, "<span style='font-weight: bold; color:blue; background-color:#9999ff'>" + val + "</span>");
+             entryElement.innerHTML = html;
+           }  
+         }
+         else
+         {
+           //entryElement.style.visibility = "hidden";
+           $(entryElement).hide();
+         }
+       }
+     /*}
+     catch (err) {
+       alert(err);
+     }*/
+   }
+
   </script>
 
 </head>
@@ -55,13 +91,13 @@
         {          
           if (t.IsCompleted)
           {
-            <div class="alert alert-success taskDeleteModal" role="alert" data-toggle="modal" id="@t.Id" data-target="#taskDeleteModal">
+            <div class="alert alert-success taskDeleteModal taskEntry" role="alert" data-toggle="modal" id="@t.Id" taskText="@t.Text" data-target="#taskDeleteModal">
               @t.Text
             </div>
           }
           else
           {
-            <div class="alert alert-info taskActionModal" role="alert" data-toggle="modal" id="@t.Id" taskText="@t.Text" data-target="#taskActionModal">
+            <div class="alert alert-info taskActionModal taskEntry" role="alert" data-toggle="modal" id="@t.Id" taskText="@t.Text" data-target="#taskActionModal">
               @t.Text
             </div>
           }
@@ -69,7 +105,16 @@
     </p>
 </div>
 
- <center><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewTaskModal">Add new task</button></center>
+  <hr/>
+
+   <div class="container">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewTaskModal" style="position:absolute; left:45%">Add new task</button>
+      <input type="text" class="form-control" id="search-text" placeholder="Enter Search Text" style="float:right; width:20%" oninput="filterChanged(this.value)">    
+   </div>
+  
+
+  <hr/>
+
 
 <!-- Modal -->
 <div id="addNewTaskModal" class="modal fade" role="dialog">
