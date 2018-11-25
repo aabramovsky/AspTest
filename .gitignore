@@ -4,4 +4,5 @@
 *.pdb
 /MvcBootstrapBook/obj
 /MvcBootstrapBook/bin
+/packages
 *.suo
