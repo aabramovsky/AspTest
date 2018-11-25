@@ -84,9 +84,18 @@
 
 </head>
 
+    <hr/>
+
+   <div class="container">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewTaskModal" style="position:absolute; left:45%">Add new task</button>
+      <input type="text" class="form-control" id="search-text" placeholder="Enter Search Text" style="float:right; width:20%" oninput="filterChanged(this.value)">    
+   </div>
+  
+
+  <hr/>
+
 <div>
     <p>
-        <h2><center>Task List:</center></h2>
         @foreach (Task t in Model)
         {          
           if (t.IsCompleted)
@@ -105,15 +114,7 @@
     </p>
 </div>
 
-  <hr/>
 
-   <div class="container">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewTaskModal" style="position:absolute; left:45%">Add new task</button>
-      <input type="text" class="form-control" id="search-text" placeholder="Enter Search Text" style="float:right; width:20%" oninput="filterChanged(this.value)">    
-   </div>
-  
-
-  <hr/>
 
 
 <!-- Modal -->
